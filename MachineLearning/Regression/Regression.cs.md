@@ -162,7 +162,7 @@ $Standard Error of the Estimate = \sqrt{\frac{\sum{(\hat{y} - y)}^2}{n - df}}$\
 $n$
 : Number of observations\
 $df$
-: Degrees of Freedom AKA: the amount of variables that we have in this case: 2 (x & y)
+: Degrees of Freedom AKA: the amount of variables that we have. in this case: 2 (x & y)
 
 Lets start filling these in!
 First we lets calculate the dividend\
@@ -186,3 +186,47 @@ $21.43128$ and $63.83128$
 TLDR:
 99.7% of the predicted values will be between 21.43 and 63.83\
 This example is just a bad showcase as we only have 5 datapoints. and well 99.7% of 5 is basically 5...
+
+# Multiple Linear Regression
+*Multiple linear regression is used to estimate the relationship between the dependent variable and two or more independent variables in a straight line.*
+--- -
+$y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + ... \beta_{p}x_{p} + \epsilon$
+where p is the number of variables we have
+the $\beta$'s in the formula are a sum of linear parameters, while the $\epsilon$ is the error term.
+Now for the equation itself we have the same exact formula except now we assume the error to be zero so it becomes:\
+$E(y) = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + ... \beta_{p}x_{p}$
+Where E is the predicted value
+However we will use the estimated multiple regression equation which is:\
+$\hat{y} = b_{0} + b_{1}x_{1} + b_{2}x_{2} + ... b_{p}x_{p}$\
+Where $b_{p}$ are the estimates of $\beta_{p}$ and $\hat{y}$ is the predicted value of the dependent variable
+
+
+Lets create a dataset we will use for the near future. Lets say we want to calculate the time it takes to travel a certain route, based on the distance in km, and the amount of traffic lights we pass.
+
+|Total Km traveled($x_{1}$)|Trafic lights ($x_{2}$)|Travel time in hours($y$)|
+|:---:|:---:|:---:|
+|60|12|3|
+|73|15|3.6|
+|58|8|2.4|
+|47|9|2.2|
+|91|13|4.5|
+|108|5|1.6|
+|54|6|2.1|
+|36|3|0.7|
+|64|8|2.6|
+|86|7|2.8|
+
+Travel time in this case is the dependent variable, while the km traveled and traffic lights are the independent variable.
+
+With multiple independent variables we need to take more things in considerations for example:
+1. **Overfitting**
+: Having more independent variables doesnt mean we get a better regression, it can make it far worse this is known as "Overfitting".
+1. **MultiCollinearity**
+: Adding additional independent variables creates relationships among them, meaning that independent variables can potentially depend on eachother or relate to eachother.
+* In the perfect scenario, you want the independent variables to be correlated with the dependent variable, but **NOT** with each other!
+* This means there is a lot more prep-work to do before regressing if we want to do it properly like:
+    1. Correlations
+    1. Scatter plots
+    1. Simple linear regressions
+* Each coefficient is interpreted as the estimated change in $y$ corresponding to a one unit change in a independent varaible, when all other variables are held constant.
+

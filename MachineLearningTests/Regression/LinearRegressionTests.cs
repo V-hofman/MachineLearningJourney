@@ -23,7 +23,7 @@ namespace MachineLearningTests.Regression
             });
             var sut = new LinearRegression(RegressionTypes.LinearRegression, data);
 
-            var expected = new Tuple<decimal, decimal>(3, (decimal)42.4);
+            var expected = new Tuple<decimal, decimal>(3, 42.4m);
             Assert.Equal(expected, sut.means);
         }
 
