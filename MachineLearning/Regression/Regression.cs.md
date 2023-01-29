@@ -15,7 +15,25 @@ Definitions:
 * **Actual**
 : The value of the dependent in the dataset
 * **$R^2$**
-: How well our regression line can predict values
+: How well our regression line can predict values aim for the highest possible
+* **Standard Error of the Estimate**
+: The average difference between the estimated values and the actual values aim for the lowest possible! Note: Not the same as standard deviation!
+* **Confidence interval**
+: Within a confidence interval of $x$ it is estimated that $x$ amount of people will fall within a certain standard errors of the sample mean.
+
+* **The empirical rule** tells you where a certain amount of values will lie in a normal distribution
+: tells you where a certain amount of values will lie in a normal distribution.
+
+* **The $Z$ Value**
+: The amount of standard deviations away from the mean, calculated with the mean and standard deviation $z = \frac{x - \mu }{\delta}$ where $\mu$ = the mean, x = the individual value and $\delta$ = standard deviation
+
+| Coverage |standard deviations from the mean   
+|:---:|:---:|
+| 99.7% | 3  |
+| 95%   | 2  |
+| 68%   | 1  |
+
+
 
 
 ## The formula for Linear Regression
@@ -90,6 +108,8 @@ The formula ended up as:\
 $\hat{y} =  12.1  + 10.1x $
 --- -
 ## Checking Performance
+--- -
+### $R^2$ or fitness of the line
 - $R^2$ is determined by the distance of each predicted vale compared to the mean.\
 In the previous bit we already used some values lets use those again! and remember:\
 $\hat{y} =  12.1  + 10.1x $\
@@ -127,3 +147,42 @@ Now $R^2 = \frac{\sum{(\hat{y} - \tilde{y})^2}}{\sum{(y - \tilde{y})^2}} = \frac
 Which means the regression we made is about 87% fit\
 And well 87%? that isnt good. Most statistical analyses require 95% or even 99% accuracy!\
 The higher the number the better!
+--- -
+### Standard Error of the Estimate
+Standard Error of the the Estimate is calculated by comparing the estimated values with the actual values. Lets use the same line as before and note the known values down below:\
+|$x$   |$y$  |$\hat{y}$ |
+|:---: |:---:|:---: | 
+| 1    | 30  | 22.2 |
+| 2    | 25  | 32.3 |
+| 3    | 38  | 42.4 |
+| 4    | 52  | 52.5 |
+| 5    | 67  | 62.6 |
+
+$Standard Error of the Estimate = \sqrt{\frac{\sum{(\hat{y} - y)}^2}{n - df}}$\
+$n$
+: Number of observations\
+$df$
+: Degrees of Freedom AKA: the amount of variables that we have in this case: 2 (x & y)
+
+Lets start filling these in!
+First we lets calculate the dividend\
+|$x$   |$y$  |$\hat{y}$ |$(\hat{y} - y)^2 $ |
+|:---: |:---:|:---: | :---: |
+| 1    | 30  | 22.2 | 60.84 |
+| 2    | 25  | 32.3 | 53.29 |
+| 3    | 38  | 42.4 | 19.36 |
+| 4    | 52  | 52.5 | 0.25  |
+| 5    | 67  | 62.6 | 19.36 |
+
+$\sum{(\hat{y} - y)}^2 = 60.84 + 53.29 + 19.36 + 0.25 + 19.36 = 153.1$\
+${n - df} = 5 - 2 = 3$\
+Making the formula\
+$ \sqrt{\frac{153.1}{3}} = \sqrt{51.033...} \approx 7.14376...$
+Which means we can calculate the probability of a value being inside a coverage.\
+In this example if we want 99.7% certainty a value will be covered we can assume using the empirical rule that the values will need to be 3 standard errors away from the mean making the coverage any value between:\
+$42.4 - (3*7.14376)$ and $42.4 + (3*7.14376)$\
+$21.43128$ and $63.83128$
+
+TLDR:
+99.7% of the predicted values will be between 21.43 and 63.83\
+This example is just a bad showcase as we only have 5 datapoints. and well 99.7% of 5 is basically 5...
