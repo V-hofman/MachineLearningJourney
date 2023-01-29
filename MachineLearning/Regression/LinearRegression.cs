@@ -8,6 +8,9 @@
 
         public decimal R2 { get; private set; }
         public decimal StandardError { get; private set; }
+        public Tuple<decimal, decimal> Empiricial99 { get; private set; }
+        public Tuple<decimal, decimal> Empiricial95 { get; private set; }
+        public Tuple<decimal, decimal> Empiricial68 { get; private set; }
 
         public LinearRegression(DataModel data)
         {
@@ -16,6 +19,7 @@
             this.line = CalculateLine();
             this.R2 = CalculateR2();
             this.StandardError = CalculateStandardError();
+            CalculateEmpiricals();
         }
 
         private void CalculateMeans()
@@ -95,6 +99,23 @@
                 sum += (row.Item2 - this.line.Item1 - this.line.Item2 * row.Item1) * (row.Item2 - this.line.Item1 - this.line.Item2 * row.Item1);
             }
             return (decimal)Math.Sqrt((double)(sum / (this.data.FeatureData.Count - 2)));
+        }
+        
+        private void CalculateEmpiricals()
+        {
+            this.Empiricial99 = new Tuple<decimal, decimal>(this.means.Item2 - 3 * this.StandardError, this.means.Item2 + 3 * this.StandardError);
+            this.Empiricial95 = new Tuple<decimal, decimal>(this.means.Item2 - 2 * this.StandardError, this.means.Item2 + 2 * this.StandardError);
+            this.Empiricial68 = new Tuple<decimal, decimal>(this.means.Item2 - this.StandardError, this.means.Item2 + this.StandardError);
+        }
+        
+        public List<Tuple<decimal,decimal>> Predict(params decimal[] x)
+        {
+            var result = new List<Tuple<decimal, decimal>>();
+            foreach (var item in x)
+            {
+                result.Add(new Tuple<decimal, decimal>(item, this.line.Item1 + this.line.Item2 * item));
+            }
+            return result;
         }
     }
 }
