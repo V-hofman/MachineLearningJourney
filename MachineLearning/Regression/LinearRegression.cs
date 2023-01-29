@@ -2,17 +2,20 @@
 {
     public class LinearRegression
     {
-        public RegressionTypes type;
-        public DataModel data;
-        public Tuple<decimal, decimal> means;
-        public Tuple<decimal, decimal> line;
+        public DataModel data { get; private set; }
+        public Tuple<decimal, decimal> means { get; private set; }
+        public Tuple<decimal, decimal> line { get; private set; }
 
-        public LinearRegression(RegressionTypes regressionType, DataModel data)
+        public decimal R2 { get; private set; }
+        public decimal StandardError { get; private set; }
+
+        public LinearRegression(DataModel data)
         {
-            this.type = regressionType;
             this.data = data;
             CalculateMeans();
             this.line = CalculateLine();
+            this.R2 = CalculateR2();
+            this.StandardError = CalculateStandardError();
         }
 
         private void CalculateMeans()
@@ -30,7 +33,8 @@
             if (!CorrectMeanCheck(this.means, this.data))
             {
                 throw new Exception("Means are not correct");
-            }else
+            }
+            else
             {
                 CalculateB0();
             }
@@ -52,7 +56,7 @@
         {
             return new Tuple<decimal, decimal>(CalculateB0(), CalculateB1());
         }
-        
+
 
         private decimal CalculateB1()
         {
@@ -69,6 +73,28 @@
         private decimal CalculateB0()
         {
             return this.means.Item2 - CalculateB1() * this.means.Item1;
+        }
+
+        private decimal CalculateR2()
+        {
+            decimal numerator = 0;
+            decimal denominator = 0;
+            foreach (var row in this.data.FeatureData)
+            {
+                numerator += (row.Item2 - this.line.Item1 - this.line.Item2 * row.Item1) * (row.Item2 - this.line.Item1 - this.line.Item2 * row.Item1);
+                denominator += (row.Item2 - this.means.Item2) * (row.Item2 - this.means.Item2);
+            }
+            return 1 - numerator / denominator;
+        }
+
+        private decimal CalculateStandardError()
+        {
+            decimal sum = 0;
+            foreach (var row in this.data.FeatureData)
+            {
+                sum += (row.Item2 - this.line.Item1 - this.line.Item2 * row.Item1) * (row.Item2 - this.line.Item1 - this.line.Item2 * row.Item1);
+            }
+            return (decimal)Math.Sqrt((double)(sum / (this.data.FeatureData.Count - 2)));
         }
     }
 }
